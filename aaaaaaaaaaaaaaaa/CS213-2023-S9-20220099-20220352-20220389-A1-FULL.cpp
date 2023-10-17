@@ -31,12 +31,12 @@ void Flip_Filter();
 void Rotate_Filter();
 void Darken_and_Lighten_Filter();
 void Detect_Image_Edges();
-void Enlarge_Image();
-void Shrink_Image();
-void Mirror_Image();
-void Shuffle_Image();
-void Blur_Image();
-void Crop_Image();
+void Enlarge_Filter();
+void Shrink_Filter();
+void Mirror_Filter();
+void Shuffle_Filter();
+void Blur_Filter();
+void Crop_filter();
 void Skew_Image_Right();
 void Skew_Image_Up();
 void Save_the_image_to_a_file();
@@ -93,26 +93,26 @@ void doSomethingForImage() // Function to handle user input and apply filters
     Detect_Image_Edges();
     break;
   case '8':
-    Enlarge_Image();
+    Enlarge_Filter();
     break;
   case '9':
-    Shrink_Image();
+    Shrink_Filter();
     break;
   case 'a':
   case 'A':
-    Mirror_Image();
+    Mirror_Filter();
     break;
   case 'b':
   case 'B':
-    Shuffle_Image();
+    Shuffle_Filter();
     break;
   case 'c':
   case 'C':
-    Blur_Image();
+    Blur_Filter();
     break;
   case 'd':
   case 'D':
-    Crop_Image();
+    Crop_filter();
     break;
   case 'e':
   case 'E':
@@ -421,7 +421,7 @@ void Detect_Image_Edges()
 }
 // _____________________________________________________________________
 // Function to enlarge a quarter of the image
-void Enlarge_Image()
+void Enlarge_Filter()
 {
   cout << "Which quarter to enlarge 1, 2, 3 or 4?\n";
   int choose;
@@ -505,12 +505,12 @@ void Enlarge_Image()
   else
   {
     cout << "input a valid number 1, 2, 3 or 4\n";
-    Enlarge_Image(); // Prompt for valid input
+    Enlarge_Filter(); // Prompt for valid input
   }
 }
 // _____________________________________________________________________
 // Function to shrink the image
-void Shrink_Image()
+void Shrink_Filter()
 {
   cout << "Shrink to (1/2), (1/3) or (1/4)?\n";
   string shrink;
@@ -551,14 +551,14 @@ void Shrink_Image()
   else
   {
     cout << "input a valid value (1/2), (1/3) or (1/4)\n";
-    Shrink_Image(); // Prompt for valid input
+    Shrink_Filter(); // Prompt for valid input
   }
 
   copy_image_to_image1(image2); // Copy the result back to the original image
 }
 // _____________________________________________________________________
 // Function to mirror the image
-void Mirror_Image()
+void Mirror_Filter()
 {
   cout << "Mirror (l)eft, (r)ight, (u)pper, (d)own side?\n";
   char mirror;
@@ -610,12 +610,12 @@ void Mirror_Image()
   else
   {
     cout << "input a valid character l, r, u or d \n";
-    Mirror_Image(); // Prompt for valid input
+    Mirror_Filter(); // Prompt for valid input
   }
 }
 // _____________________________________________________________________
 // Function to shuffle the quarters of the image
-void Shuffle_Image()
+void Shuffle_Filter()
 {
   cout << "New order of quarters ?: ";
   int order[4];
@@ -626,7 +626,7 @@ void Shuffle_Image()
     {
       cout << "Invalid input Please enter numbers between 1 and 4.\n";
       cin.ignore();
-      Shuffle_Image();
+      Shuffle_Filter();
       return;
     }
   }
@@ -834,7 +834,7 @@ void Shuffle_Image()
 }
 // _____________________________________________________________________
 // Function to apply a blur filter to the image
-void Blur_Image()
+void Blur_Filter()
 {
   // Apply a blur filter to the image using a weighted average of neighboring pixels
   for (int i = 0; i < SIZE; i++)
@@ -855,7 +855,7 @@ void Blur_Image()
 }
 // _____________________________________________________________________
 // Function to crop a region of interest from the image
-void Crop_Image()
+void Crop_filter()
 {
   cout << "Please enter the starting point coordinates x and y and the end point coordinates l and w: ";
   int x, y, l, w;
