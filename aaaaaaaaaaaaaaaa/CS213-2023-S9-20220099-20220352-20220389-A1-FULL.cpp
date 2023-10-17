@@ -7,7 +7,6 @@
 // Purpose: The program downloads a grayscale image,
 //          performs some operations and stores it in another file
 
-/////////////hi jox 
 #include <iostream>
 #include <fstream>
 #include <cstring>
