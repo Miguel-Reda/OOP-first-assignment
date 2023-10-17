@@ -7,7 +7,6 @@
 // Purpose: The program downloads a grayscale image,
 //          performs some operations and stores it in another file
 
-// miguel top w al ba2y kantalob
 #include <iostream>
 #include <fstream>
 #include <cstring>
