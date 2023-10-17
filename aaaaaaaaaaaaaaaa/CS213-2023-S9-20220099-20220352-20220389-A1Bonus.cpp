@@ -1,9 +1,9 @@
 // FCAI – OOP Programming – 2023 - Assignment 1
-// Program Name: CS213-2023–SectionNumber-20220099-20220352-20220389-A1-FULL.cpp
+// Program Name: CS213-2023-S9-20220099-20220352-20220389-A1Bonus.cpp
 // Last Modification Date: 7/10/2023
-// Author1 and ID and Email: Joseph Sameh   20220099  jojo.1922005@gmail.com
-// Author2 and ID and Email: Miguel Reda    20220352  megooreda2005@gmail.com
-// Author3 and ID and Email: Youssef Joseph 20220389  Youssefjoseph35@gmail.com
+// Author1 and ID and Email: Joseph Sameh   S9   20220099  jojo.1922005@gmail.com
+// Author2 and ID and Email: Miguel Reda    S9   20220352  megooreda2005@gmail.com
+// Author3 and ID and Email: Youssef Joseph S19  20220389  Youssefjoseph35@gmail.com
 // Purpose: The program downloads a grayscale image,
 //          performs some operations and stores it in another file
 
@@ -15,13 +15,13 @@
 
 using namespace std;
 
-unsigned char image1[SIZE][SIZE]; // Define a 2D array for the first image
-unsigned char image2[SIZE][SIZE]; // Define a 2D array for the second image
-int EXIT = 1;                     // Initialize a variable for program exit control
+unsigned char image1[SIZE][SIZE][RGB]; // Define a 2D array for the first image
+unsigned char image2[SIZE][SIZE][RGB]; // Define a 2D array for the second image
+int EXIT = 1;                          // Initialize a variable for program exit control
 //__________________________________________________________
-void loadImage(unsigned char image[SIZE][SIZE]); // Function to load an image
+void loadImage(unsigned char image[SIZE][SIZE][RGB]); // Function to load an image
 
-void saveImage(unsigned char image[SIZE][SIZE]); // Function to save an image
+void saveImage(unsigned char image[SIZE][SIZE][RGB]); // Function to save an image
 //__________________________________________________________
 // Filter functions for image processing
 void Black_and_White_Filter();
@@ -40,7 +40,7 @@ void Crop_Image();
 void Skew_Image_Right();
 void Skew_Image_Up();
 void Save_the_image_to_a_file();
-void copy_image_to_image1(unsigned char image[SIZE][SIZE]);
+void copy_image_to_image1(unsigned char image[SIZE][SIZE][RGB]);
 void Exit();
 //__________________________________________________________________________
 void doSomethingForImage() // Function to handle user input and apply filters
@@ -130,7 +130,7 @@ void doSomethingForImage() // Function to handle user input and apply filters
     Exit();
     break;
   default:
-    cout << "\nplease, select a valid operation"; // Prompt for valid choice
+    cout << "please, select a valid operation"; // Prompt for valid choice
     doSomethingForImage();
     break;
   }
@@ -181,7 +181,7 @@ int main()
 }
 // _____________________________________________________________________
 // Function to load an image
-void loadImage(unsigned char image[SIZE][SIZE])
+void loadImage(unsigned char image[SIZE][SIZE][RGB])
 {
   char imageFileName[100]; // Define a character array for image file name
 
@@ -190,7 +190,7 @@ void loadImage(unsigned char image[SIZE][SIZE])
 
   // Add .bmp extension to the file name and load image
   strcat(imageFileName, ".bmp");
-  readGSBMP(imageFileName, image);
+  readRGBBMP(imageFileName, image);
 
   // Check if the file exists
   if (!(fopen(imageFileName, "rb")))
@@ -201,7 +201,7 @@ void loadImage(unsigned char image[SIZE][SIZE])
 }
 // _____________________________________________________________________
 // Function to save an image
-void saveImage(unsigned char image[SIZE][SIZE])
+void saveImage(unsigned char image[SIZE][SIZE][RGB])
 {
   char imageFileName[100]; // Define a character array for target image file name
 
@@ -211,7 +211,7 @@ void saveImage(unsigned char image[SIZE][SIZE])
 
   // Add .bmp extension to the file name and save image
   strcat(imageFileName, ".bmp");
-  writeGSBMP(imageFileName, image);
+  writeRGBBMP(imageFileName, image);
 }
 // _____________________________________________________________________
 // Function for Black & White Filter
@@ -221,10 +221,23 @@ void Black_and_White_Filter()
   {
     for (int j = 0; j < SIZE; j++)
     {
-      if (image1[i][j] > 127)
-        image1[i][j] = 255; // Convert pixel with value > 127 to white
-      else
-        image1[i][j] = 0; // Convert pixel with value <= 127 to black
+      for (int k = 0; k < 3; k++)
+      {
+        if (image1[i][j][k] > 127)
+        {
+          // Convert pixel with value > 127 to white
+          image1[i][j][0] = 255;
+          image1[i][j][1] = 255;
+          image1[i][j][2] = 255;
+        }
+        else
+        {
+          // Convert pixel with value <= 127 to black
+          image1[i][j][0] = 0;
+          image1[i][j][1] = 0;
+          image1[i][j][2] = 0;
+        }
+      }
     }
   }
 }
@@ -236,8 +249,12 @@ void Invert_Filter()
   {
     for (int j = 0; j < SIZE; j++)
     {
-      // Invert color by subtracting current value from 255
-      image1[i][j] = 255 - image1[i][j];
+      for (int k = 0; k < 3; k++)
+      {
+
+        // Invert color by subtracting current value from 255
+        image1[i][j][k] = 255 - image1[i][j][k];
+      }
     }
   }
 }
@@ -252,8 +269,12 @@ void Merge_Filter()
   {
     for (int j = 0; j < SIZE; j++)
     {
-      // Merge images by averaging pixel values
-      image1[i][j] = (image1[i][j] + image2[i][j]) / 2;
+      for (int k = 0; k < 3; k++)
+      {
+
+        // Merge images by averaging pixel values
+        image1[i][j][k] = (image1[i][j][k] + image2[i][j][k]) / 2;
+      }
     }
   }
 }
@@ -270,7 +291,11 @@ void Flip_Filter()
     {
       for (int j = 0; j < SIZE; j++)
       {
-        image2[i][j] = image1[i][255 - j]; // Flip horizontally
+        for (int k = 0; k < 3; k++)
+        {
+
+          image2[i][j][k] = image1[i][255 - j][k]; // Flip horizontally
+        }
       }
     }
   }
@@ -280,7 +305,11 @@ void Flip_Filter()
     {
       for (int j = 0; j < SIZE; j++)
       {
-        image2[i][j] = image1[255 - i][j]; // Flip vertically
+        for (int k = 0; k < 3; k++)
+        {
+
+          image2[i][j][k] = image1[255 - i][j][k]; // Flip vertically
+        }
       }
     }
   }
@@ -309,7 +338,11 @@ void Rotate_Filter()
     {
       for (int j = 0; j < SIZE; j++)
       {
-        image2[j][255 - i] = image1[i][j]; // Rotate 90 degrees
+        for (int k = 0; k < 3; k++)
+        {
+
+          image2[j][255 - i][k] = image1[i][j][k]; // Rotate 90 degrees
+        }
       }
     }
     copy_image_to_image1(image2); // Copy the result back to the original image
@@ -320,7 +353,11 @@ void Rotate_Filter()
     {
       for (int j = 0; j < SIZE; j++)
       {
-        image2[255 - i][255 - j] = image1[i][j]; // Rotate 180 degrees
+        for (int k = 0; k < 3; k++)
+        {
+
+          image2[255 - i][255 - j][k] = image1[i][j][k]; // Rotate 180 degrees
+        }
       }
     }
     copy_image_to_image1(image2); // Copy the result back to the original image
@@ -331,7 +368,11 @@ void Rotate_Filter()
     {
       for (int j = 0; j < SIZE; j++)
       {
-        image2[i][j] = image1[j][255 - i]; // Rotate 270 degrees
+        for (int k = 0; k < 3; k++)
+        {
+
+          image2[i][j][k] = image1[j][255 - i][k]; // Rotate 270 degrees
+        }
       }
     }
     copy_image_to_image1(image2); // Copy the result back to the original image // copy image2 to image1
@@ -355,7 +396,11 @@ void Darken_and_Lighten_Filter()
     {
       for (int j = 0; j < SIZE; j++)
       {
-        image1[i][j] = image1[i][j] / 2; // Darken image by 50%
+        for (int k = 0; k < 3; k++)
+        {
+
+          image1[i][j][k] = image1[i][j][k] / 2; // Darken image by 50%
+        }
       }
     }
   }
@@ -365,7 +410,11 @@ void Darken_and_Lighten_Filter()
     {
       for (int j = 0; j < SIZE; j++)
       {
-        image1[i][j] = (image1[i][j] + 255) / 2; // Lighten image by 50%
+        for (int k = 0; k < 3; k++)
+        {
+
+          image1[i][j][k] = (image1[i][j][k] + 255) / 2; // Lighten image by 50%
+        }
       }
     }
   }
@@ -379,29 +428,32 @@ void Darken_and_Lighten_Filter()
 // Function to detect edges in the image
 void Detect_Image_Edges()
 {
-  // for (int i = 0; i < SIZE; i++)
-  // {
-  //   for (int j = 0; j < SIZE; j++)
-  //   {
-  //     if (image1[i][j] > 127)
-  //       image1[i][j] = 255;
-  //     else
-  //       image1[i][j] = 0;
-  //   }
-  // }
 
   for (int i = 0; i < SIZE; i++)
   {
     for (int j = 0; j < SIZE; j++)
     {
-      // Check if the difference between adjacent pixels is greater than 32
-      if (abs(image1[i][j] - image1[i + 1][j]) > 32 || abs(image1[i][j] - image1[i][j + 1]) > 32)
+      for (int k = 0; k < 3; k++)
       {
-        image2[i][j] = 0; // Set edge pixels to black
+
+        image2[i][j][k] = 255;
       }
-      else
+    }
+  }
+  for (int i = 0; i < SIZE; i++)
+  {
+    for (int j = 0; j < SIZE; j++)
+    {
+      for (int k = 0; k < 3; k++)
       {
-        image2[i][j] = 255; // Set non-edge pixels to white
+
+        // Check if the difference between adjacent pixels is greater than 30
+        if (abs(image1[i][j][k] - image1[i + 1][j][k]) > 30 || abs(image1[i][j][k] - image1[i][j + 1][k]) > 30)
+        {
+          image2[i][j][0] = 0; // Set edge pixels to black
+          image2[i][j][1] = 0; // Set edge pixels to black
+          image2[i][j][2] = 0; // Set edge pixels to black
+        }
       }
     }
   }
@@ -411,9 +463,12 @@ void Detect_Image_Edges()
   {
     for (int j = 0; j < SIZE; j++)
     {
-      if (image2[i][j - 1] == 255 && image2[i][j + 1] == 255 && image2[i - 1][j] == 255 && image2[i + 1][j] == 255 && image2[i - 1][j - 1] == 255 && image2[i + 1][j + 1] == 255 && image2[i - 1][j + 1] == 255 && image2[i + 1][j - 1] == 255)
+
+      if (image2[i][j - 1][0] == 255 && image2[i][j + 1][0] == 255 && image2[i - 1][j][0] == 255 && image2[i + 1][j][0] == 255 && image2[i - 1][j - 1][0] == 255 && image2[i + 1][j + 1][0] == 255 && image2[i - 1][j + 1][0] == 255 && image2[i + 1][j - 1][0] == 255)
       {
-        image2[i][j] = 255;
+        image2[i][j][0] = 255;
+        image2[i][j][1] = 255;
+        image2[i][j][2] = 255;
       }
     }
   }
@@ -429,76 +484,108 @@ void Enlarge_Image()
   if (choose == 1)
   {
     // Extract the top-left quarter and enlarge it
-    unsigned char temp[SIZE][SIZE];
+    unsigned char temp[SIZE][SIZE][RGB];
     for (int i = 0; i < SIZE / 2; i++)
     {
       for (int j = 0; j < SIZE / 2; j++)
       {
-        temp[i][j] = image1[i][j];
+        for (int k = 0; k < 3; k++)
+        {
+
+          temp[i][j][k] = image1[i][j][k];
+        }
       }
     }
     for (int i = 0; i < SIZE; i++)
     {
       for (int j = 0; j < SIZE; j++)
       {
-        image1[i][j] = temp[i / 2][j / 2];
+        for (int k = 0; k < 3; k++)
+        {
+
+          image1[i][j][k] = temp[i / 2][j / 2][k];
+        }
       }
     }
   }
   else if (choose == 2)
   {
     // Extract the top-right quarter and enlarge it
-    unsigned char temp[SIZE][SIZE];
+    unsigned char temp[SIZE][SIZE][RGB];
     for (int i = 0; i < SIZE / 2; i++)
     {
       for (int j = SIZE / 2; j < SIZE; j++)
       {
-        temp[i][j] = image1[i][j];
+        for (int k = 0; k < 3; k++)
+        {
+
+          temp[i][j][k] = image1[i][j][k];
+        }
       }
     }
     for (int i = 0; i < SIZE; i++)
     {
       for (int j = 0; j < SIZE; j++)
       {
-        image1[i][j] = temp[i / 2][(j + SIZE) / 2];
+        for (int k = 0; k < 3; k++)
+        {
+
+          image1[i][j][k] = temp[i / 2][(j + SIZE) / 2][k];
+        }
       }
     }
   }
   else if (choose == 3)
   {
     // Extract the down-left quarter and enlarge it
-    unsigned char temp[SIZE][SIZE];
+    unsigned char temp[SIZE][SIZE][RGB];
     for (int i = SIZE / 2; i < SIZE; i++)
     {
       for (int j = 0; j < SIZE / 2; j++)
       {
-        temp[i][j] = image1[i][j];
+        for (int k = 0; k < 3; k++)
+        {
+
+          temp[i][j][k] = image1[i][j][k];
+        }
       }
     }
     for (int i = 0; i < SIZE; i++)
     {
       for (int j = 0; j < SIZE; j++)
       {
-        image1[i][j] = temp[(i + SIZE) / 2][j / 2];
+        for (int k = 0; k < 3; k++)
+        {
+
+          image1[i][j][k] = temp[(i + SIZE) / 2][j / 2][k];
+        }
       }
     }
   }
   else if (choose == 4)
   {
     // Extract the down-right quarter and enlarge it
-    unsigned char temp[SIZE][SIZE];
+    unsigned char temp[SIZE][SIZE][RGB];
     for (int i = SIZE / 2; i < SIZE; i++)
     {
       for (int j = SIZE / 2; j < SIZE; j++)
       {
-        temp[i][j] = image1[i][j];
+        for (int k = 0; k < 3; k++)
+        {
+
+          temp[i][j][k] = image1[i][j][k];
+        }
       }
     }
     for (int i = 0; i < SIZE; i++)
     {
       for (int j = 0; j < SIZE; j++)
       {
-        image1[i][j] = temp[(i + SIZE) / 2][(j + SIZE) / 2];
+        for (int k = 0; k < 3; k++)
+        {
+
+          image1[i][j][k] = temp[(i + SIZE) / 2][(j + SIZE) / 2][k];
+        }
       }
     }
   }
@@ -522,7 +609,11 @@ void Shrink_Image()
     {
       for (int j = 0; j < SIZE / 2; j++)
       {
-        image2[i][j] = image1[(2 * i)][(2 * j)];
+        for (int k = 0; k < 3; k++)
+        {
+
+          image2[i][j][k] = image1[(2 * i)][(2 * j)][k];
+        }
       }
     }
   }
@@ -533,7 +624,11 @@ void Shrink_Image()
     {
       for (int j = 0; j < SIZE / 3; j++)
       {
-        image2[i][j] = image1[(3 * i)][(3 * j)];
+        for (int k = 0; k < 3; k++)
+        {
+
+          image2[i][j][k] = image1[(3 * i)][(3 * j)][k];
+        }
       }
     }
   }
@@ -544,7 +639,11 @@ void Shrink_Image()
     {
       for (int j = 0; j < SIZE / 4; j++)
       {
-        image2[i][j] = image1[(4 * i)][(4 * j)];
+        for (int k = 0; k < 3; k++)
+        {
+
+          image2[i][j][k] = image1[(4 * i)][(4 * j)][k];
+        }
       }
     }
   }
@@ -570,7 +669,11 @@ void Mirror_Image()
     {
       for (int j = SIZE / 2; j < SIZE; j++)
       {
-        image1[i][j] = image1[i][SIZE - j];
+        for (int k = 0; k < 3; k++)
+        {
+
+          image1[i][j][k] = image1[i][SIZE - j][k];
+        }
       }
     }
   }
@@ -581,7 +684,11 @@ void Mirror_Image()
     {
       for (int j = 0; j < SIZE / 2; j++)
       {
-        image1[i][j] = image1[i][SIZE - j];
+        for (int k = 0; k < 3; k++)
+        {
+
+          image1[i][j][k] = image1[i][SIZE - j][k];
+        }
       }
     }
   }
@@ -592,7 +699,11 @@ void Mirror_Image()
     {
       for (int j = 0; j < SIZE; ++j)
       {
-        image1[i][j] = image1[SIZE - i][j];
+        for (int k = 0; k < 3; k++)
+        {
+
+          image1[i][j][k] = image1[SIZE - i][j][k];
+        }
       }
     }
   }
@@ -603,7 +714,11 @@ void Mirror_Image()
     {
       for (int j = 0; j < SIZE; ++j)
       {
-        image1[i][j] = image1[SIZE - i][j];
+        for (int k = 0; k < 3; k++)
+        {
+
+          image1[i][j][k] = image1[SIZE - i][j][k];
+        }
       }
     }
   }
@@ -648,7 +763,11 @@ void Shuffle_Image()
           {
             for (int j = 0; j < 128; j++)
             {
-              image2[i][j] = image1[i][j];
+              for (int k = 0; k < 3; k++)
+              {
+
+                image2[i][j][k] = image1[i][j][k];
+              }
             }
           }
         }
@@ -659,7 +778,11 @@ void Shuffle_Image()
           {
             for (int j = 0; j < 128; j++)
             {
-              image2[i][j + 128] = image1[i][j];
+              for (int k = 0; k < 3; k++)
+              {
+
+                image2[i][j + 128][k] = image1[i][j][k];
+              }
             }
           }
         }
@@ -670,7 +793,11 @@ void Shuffle_Image()
           {
             for (int j = 0; j < 128; j++)
             {
-              image2[i + 128][j] = image1[i][j];
+              for (int k = 0; k < 3; k++)
+              {
+
+                image2[i + 128][j][k] = image1[i][j][k];
+              }
             }
           }
         }
@@ -681,7 +808,11 @@ void Shuffle_Image()
           {
             for (int j = 0; j < 128; j++)
             {
-              image2[i + 128][j + 128] = image1[i][j];
+              for (int k = 0; k < 3; k++)
+              {
+
+                image2[i + 128][j + 128][k] = image1[i][j][k];
+              }
             }
           }
         }
@@ -695,7 +826,11 @@ void Shuffle_Image()
           {
             for (int j = 128; j < 256; j++)
             {
-              image2[i][j - 128] = image1[i][j];
+              for (int k = 0; k < 3; k++)
+              {
+
+                image2[i][j - 128][k] = image1[i][j][k];
+              }
             }
           }
         }
@@ -706,7 +841,11 @@ void Shuffle_Image()
           {
             for (int j = 128; j < 256; j++)
             {
-              image2[i][j] = image1[i][j];
+              for (int k = 0; k < 3; k++)
+              {
+
+                image2[i][j][k] = image1[i][j][k];
+              }
             }
           }
         }
@@ -717,7 +856,11 @@ void Shuffle_Image()
           {
             for (int j = 128; j < 256; j++)
             {
-              image2[i + 128][j - 128] = image1[i][j];
+              for (int k = 0; k < 3; k++)
+              {
+
+                image2[i + 128][j - 128][k] = image1[i][j][k];
+              }
             }
           }
         }
@@ -728,7 +871,11 @@ void Shuffle_Image()
           {
             for (int j = 128; j < 256; j++)
             {
-              image2[i + 128][j] = image1[i][j];
+              for (int k = 0; k < 3; k++)
+              {
+
+                image2[i + 128][j][k] = image1[i][j][k];
+              }
             }
           }
         }
@@ -742,7 +889,11 @@ void Shuffle_Image()
           {
             for (int j = 0; j < 128; j++)
             {
-              image2[i - 128][j] = image1[i][j];
+              for (int k = 0; k < 3; k++)
+              {
+
+                image2[i - 128][j][k] = image1[i][j][k];
+              }
             }
           }
         }
@@ -753,7 +904,11 @@ void Shuffle_Image()
           {
             for (int j = 0; j < 128; j++)
             {
-              image2[i - 128][j + 128] = image1[i][j];
+              for (int k = 0; k < 3; k++)
+              {
+
+                image2[i - 128][j + 128][k] = image1[i][j][k];
+              }
             }
           }
         }
@@ -764,7 +919,11 @@ void Shuffle_Image()
           {
             for (int j = 0; j < 128; j++)
             {
-              image2[i][j] = image1[i][j];
+              for (int k = 0; k < 3; k++)
+              {
+
+                image2[i][j][k] = image1[i][j][k];
+              }
             }
           }
         }
@@ -775,7 +934,11 @@ void Shuffle_Image()
           {
             for (int j = 0; j < 128; j++)
             {
-              image2[i][j + 128] = image1[i][j];
+              for (int k = 0; k < 3; k++)
+              {
+
+                image2[i][j + 128][k] = image1[i][j][k];
+              }
             }
           }
         }
@@ -789,7 +952,11 @@ void Shuffle_Image()
           {
             for (int j = 128; j < 256; j++)
             {
-              image2[i - 128][j - 128] = image1[i][j];
+              for (int k = 0; k < 3; k++)
+              {
+
+                image2[i - 128][j - 128][k] = image1[i][j][k];
+              }
             }
           }
         }
@@ -800,7 +967,11 @@ void Shuffle_Image()
           {
             for (int j = 128; j < 256; j++)
             {
-              image2[i - 128][j] = image1[i][j];
+              for (int k = 0; k < 3; k++)
+              {
+
+                image2[i - 128][j][k] = image1[i][j][k];
+              }
             }
           }
         }
@@ -811,7 +982,11 @@ void Shuffle_Image()
           {
             for (int j = 128; j < 256; j++)
             {
-              image2[i][j - 128] = image1[i][j];
+              for (int k = 0; k < 3; k++)
+              {
+
+                image2[i][j - 128][k] = image1[i][j][k];
+              }
             }
           }
         }
@@ -822,7 +997,11 @@ void Shuffle_Image()
           {
             for (int j = 128; j < 256; j++)
             {
-              image2[i][j] = image1[i][j];
+              for (int k = 0; k < 3; k++)
+              {
+
+                image2[i][j][k] = image1[i][j][k];
+              }
             }
           }
         }
@@ -841,7 +1020,11 @@ void Blur_Image()
   {
     for (int j = 0; j < SIZE; j++)
     {
-      image1[i][j] = (image1[i][j] + image1[i][j + 1] + image1[i][j - 1] + image1[i + 1][j] + image1[i - 1][j] + image1[i + 1][j + 1] + image1[i - 1][j - 1] + image1[i - 1][j + 1] + image1[i + 1][j - 1]) / 9;
+      for (int k = 0; k < 3; k++)
+      {
+
+        image1[i][j][k] = (image1[i][j][k] + image1[i][j + 1][k] + image1[i][j - 1][k] + image1[i + 1][j][k] + image1[i - 1][j][k] + image1[i + 1][j + 1][k] + image1[i - 1][j - 1][k] + image1[i - 1][j + 1][k] + image1[i + 1][j - 1][k]) / 9;
+      }
     }
   }
   // Repeat the process again to get better
@@ -849,7 +1032,11 @@ void Blur_Image()
   {
     for (int j = 0; j < SIZE; j++)
     {
-      image1[i][j] = (image1[i][j] + image1[i][j + 1] + image1[i][j - 1] + image1[i + 1][j] + image1[i - 1][j] + image1[i + 1][j + 1] + image1[i - 1][j - 1] + image1[i - 1][j + 1] + image1[i + 1][j - 1]) / 9;
+      for (int k = 0; k < 3; k++)
+      {
+
+        image1[i][j][k] = (image1[i][j][k] + image1[i][j + 1][k] + image1[i][j - 1][k] + image1[i + 1][j][k] + image1[i - 1][j][k] + image1[i + 1][j + 1][k] + image1[i - 1][j - 1][k] + image1[i - 1][j + 1][k] + image1[i + 1][j - 1][k]) / 9;
+      }
     }
   }
 }
@@ -865,7 +1052,11 @@ void Crop_Image()
   {
     for (int j = x; j < x + l; ++j)
     {
-      image2[i][j] = image1[i][j];
+      for (int k = 0; k < 3; k++)
+      {
+
+        image2[i][j][k] = image1[i][j][k];
+      }
     }
   }
   copy_image_to_image1(image2); // Copy the result back to the original image
@@ -874,28 +1065,35 @@ void Crop_Image()
 // Function to skew the image to the right
 void Skew_Image_Right()
 {
-  cout << "Please enter degree to skew right less than 89: ";
+  cout << "Please enter degree to skew right less than 85: ";
   double degree;
   cin >> degree;
   double mov = tan((degree * 22) / (180 * 7)) * 256;
   double step = mov / SIZE; // Number of steps
-  unsigned char temp[SIZE][SIZE + (int)mov];
+  unsigned char temp[SIZE][SIZE + (int)mov][RGB];
 
   // Initialize the temporary image with white pixels
   for (int i = 0; i < SIZE; i++)
   {
     for (int j = 0; j < SIZE + (int)mov; j++)
     {
-      temp[i][j] = 255;
+      for (int k = 0; k < 3; k++)
+      {
+
+        temp[i][j][k] = 255;
+      }
     }
   }
-
   // Shift the pixels to the right according to the degree of skew
   for (int i = 0; i < SIZE; i++)
   {
     for (int j = 0; j < SIZE; j++)
     {
-      temp[i][j + (int)mov] = image1[i][j];
+      for (int k = 0; k < 3; k++)
+      {
+
+        temp[i][j + (int)mov][k] = image1[i][j][k];
+      }
     }
     mov -= step;
   }
@@ -905,7 +1103,11 @@ void Skew_Image_Right()
   {
     for (int j = 0; j < SIZE; j++)
     {
-      image1[i][j] = temp[i][int((1 + step) * j)];
+      for (int k = 0; k < 3; k++)
+      {
+
+        image1[i][j][k] = temp[i][int((1 + step) * j)][k];
+      }
     }
   }
 }
@@ -913,28 +1115,36 @@ void Skew_Image_Right()
 // Function to skew the image upwards
 void Skew_Image_Up()
 {
-  cout << "Please enter degree to skew up less than 89: ";
+  cout << "Please enter degree to skew up less than 85: ";
   double degree;
   cin >> degree;
   double mov = tan((degree * 22) / (180 * 7)) * 256;
   double step = mov / SIZE; // Number of steps
-  unsigned char temp[SIZE + (int)mov][SIZE];
+  unsigned char temp[SIZE + (int)mov][SIZE][RGB];
 
   // Initialize the temporary image with white pixels
   for (int i = 0; i < SIZE + (int)mov; i++)
   {
     for (int j = 0; j < SIZE; j++)
     {
-      temp[i][j] = 255;
+      for (int k = 0; k < 3; k++)
+      {
+
+        temp[i][j][k] = 255;
+      }
     }
   }
 
   // Shift the pixels upwards according to the degree of skew
   for (int j = 0; j < SIZE; j++)
   {
-    for (int i = 0; i < SIZE; i++)
+    for (int k = 0; k < 3; k++)
     {
-      temp[i + (int)mov][j] = image1[i][j];
+
+      for (int i = 0; i < SIZE; i++)
+      {
+        temp[i + (int)mov][j][k] = image1[i][j][k];
+      }
     }
     mov -= step;
   }
@@ -944,7 +1154,11 @@ void Skew_Image_Up()
   {
     for (int j = 0; j < SIZE; j++)
     {
-      image1[i][j] = temp[int((1 + step) * i)][j];
+      for (int k = 0; k < 3; k++)
+      {
+
+        image1[i][j][k] = temp[int((1 + step) * i)][j][k];
+      }
     }
   }
 }
@@ -957,13 +1171,17 @@ void Save_the_image_to_a_file()
 }
 // _____________________________________________________________________
 // Function to copy one image to another
-void copy_image_to_image1(unsigned char image[SIZE][SIZE])
+void copy_image_to_image1(unsigned char image[SIZE][SIZE][RGB])
 {
   for (int i = 0; i < SIZE; i++)
   {
     for (int j = 0; j < SIZE; j++)
     {
-      image1[i][j] = image[i][j];
+      for (int k = 0; k < 3; k++)
+      {
+
+        image1[i][j][k] = image[i][j][k];
+      }
     }
   }
 }
