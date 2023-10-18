@@ -2,9 +2,9 @@
 // Program Name: CS213-2023-S9-20220099-20220352-20220389-A1-FULL.cpp
 // Last Modification Date: 7/10/2023
 // Authors' Information:
-//   Author1 and ID and Email: Joseph Sameh   S10   20220099  jojo.1922005@gmail.com
-//   Author2 and ID and Email: Miguel Reda    S9   20220352  megooreda2005@gmail.com
-//   Author3 and ID and Email: Youssef Joseph S19  20220389  Youssefjoseph35@gmail.com
+// Author1 and ID and Email: Joseph Sameh   S10   20220099  jojo.1922005@gmail.com
+// Author2 and ID and Email:
+// Author3 and ID and Email:
 // Purpose: The program downloads a grayscale image,
 //          performs some operations and stores it in another file
 
@@ -37,7 +37,7 @@ void Shrink_Filter();
 void Mirror_Filter();
 void Shuffle_Filter();
 void Blur_Filter();
-void Crop_filter();
+void Crop_Filter();
 void Skew_Image_Right();
 void Skew_Image_Up();
 void Save_the_image_to_a_file();
@@ -113,7 +113,7 @@ void doSomethingForImage() // Function to handle user input and apply filters
     break;
   case 'd':
   case 'D':
-    Crop_filter();
+    Crop_Filter();
     break;
   case 'e':
   case 'E':
@@ -856,7 +856,7 @@ void Blur_Filter()
 }
 // _____________________________________________________________________
 // Function to crop a region of interest from the image
-void Crop_filter()
+void Crop_Filter()
 {
   cout << "Please enter the starting point coordinates x and y and the end point coordinates l and w: ";
   int x, y, l, w;
@@ -866,7 +866,7 @@ void Crop_filter()
   if (x < 0 || x > SIZE || y < 0 || y > SIZE || l < 0 || l > SIZE || w < 0 || w > SIZE || x > l || y > w)
   {
     cout << "input a valid Numbers/n";
-    Crop_filter();
+    Crop_Filter();
     return;
   }
 

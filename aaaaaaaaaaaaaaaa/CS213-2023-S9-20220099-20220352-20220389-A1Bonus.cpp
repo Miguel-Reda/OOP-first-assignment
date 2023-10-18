@@ -1,10 +1,11 @@
 // FCAI – OOP Programming – 2023 - Assignment 1
 // Program Name: CS213-2023-S9-20220099-20220352-20220389-A1Bonus.cpp
 // Last Modification Date: 7/10/2023
+// Authors' Information:
 // Author1 and ID and Email: Joseph Sameh   S9   20220099  jojo.1922005@gmail.com
-// Author2 and ID and Email: Miguel Reda    S9   20220352  megooreda2005@gmail.com
-// Author3 and ID and Email: Youssef Joseph S19  20220389  Youssefjoseph35@gmail.com
-// Purpose: The program downloads a grayscale image,
+// Author2 and ID and Email:
+// Author3 and ID and Email:
+// Purpose: The program downloads a RGB image,
 //          performs some operations and stores it in another file
 
 #include <iostream>
@@ -1047,6 +1048,15 @@ void Crop_Filter()
   cout << "Please enter the starting point coordinates x and y and the end point coordinates l and w: ";
   int x, y, l, w;
   cin >> x >> y >> l >> w;
+
+  // Prompt for valid input
+  if (x < 0 || x > SIZE || y < 0 || y > SIZE || l < 0 || l > SIZE || w < 0 || w > SIZE || x > l || y > w)
+  {
+    cout << "input a valid Numbers/n";
+    Crop_Filter();
+    return;
+  }
+
   // Copy the specified region to the result image
   for (int i = y; i < y + w; ++i)
   {
