@@ -861,6 +861,15 @@ void Crop_filter()
   cout << "Please enter the starting point coordinates x and y and the end point coordinates l and w: ";
   int x, y, l, w;
   cin >> x >> y >> l >> w;
+
+  // Prompt for valid input
+  if (x < 0 || y < 0 || l > 256 || w > 256)
+  {
+    cout << "input a valid Numbers/n";
+    Crop_filter();
+    return;
+  }
+
   // Copy the specified region to the result image
   for (int i = y; i < y + w; ++i)
   {
