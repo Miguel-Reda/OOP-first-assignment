@@ -863,7 +863,7 @@ void Crop_filter()
   cin >> x >> y >> l >> w;
 
   // Prompt for valid input
-  if (x < 0 || y < 0 || l > 256 || w > 256)
+  if (x < 0 || x > SIZE || y < 0 || y > SIZE || l < 0 || l > SIZE || w < 0 || w > SIZE || x > l || y > w)
   {
     cout << "input a valid Numbers/n";
     Crop_filter();
