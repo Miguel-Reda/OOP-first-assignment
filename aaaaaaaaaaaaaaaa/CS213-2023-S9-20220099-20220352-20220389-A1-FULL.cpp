@@ -3,7 +3,7 @@
 // Last Modification Date: 7/10/2023
 // Authors' Information:
 // Author1 and ID and Email: Joseph Sameh   S10   20220099  jojo.1922005@gmail.com
-// Author2 and ID and Email:
+// Author2 and ID and Email: Miguel Reda    S9    20220352  megooreda2005@gmail.com
 // Author3 and ID and Email:
 // Purpose: The program downloads a grayscale image,
 //          performs some operations and stores it in another file
