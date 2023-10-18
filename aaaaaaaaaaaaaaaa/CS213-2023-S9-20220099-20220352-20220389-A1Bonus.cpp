@@ -4,7 +4,7 @@
 // Authors' Information:
 // Author1 and ID and Email: Joseph Sameh   S9   20220099  jojo.1922005@gmail.com
 // Author2 and ID and Email:
-// Author3 and ID and Email:
+// Author3 and ID and Email: Youssef Joseph s19   20220389  youssefjoseph35@gmail.com
 // Purpose: The program downloads a RGB image,
 //          performs some operations and stores it in another file
 
