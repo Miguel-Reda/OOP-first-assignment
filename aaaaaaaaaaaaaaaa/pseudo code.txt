@@ -76,7 +76,6 @@ Define function main()
             Switch choice
                 Case 's': Call Save_the_image_to_a_file()
                 Case '0': Set EXIT to 0
-            End Switch
         Else
             Print "please, select a valid operation"
 
@@ -97,17 +96,17 @@ Define function saveImage taking an argument image, a 2D array of unsigned char
 // Function for Black & White Filter
 function Black_and_White_Filter():
     for each row in image:
-        for each column in row:
-            if pixel1[row][column] > 127 then
-                pixel1[row][column] = 255
+        for each pixel in row:
+            if pixel > 127 then
+                pixel = 255
             else
-                pixel1[row][column] = 0
+                pixel = 0
 
 // Function for Invert Filter
 function Invert_Filter():
     for each row in image:
-        for each column in row:
-            pixel1[row][column] = 255 - pixel1[row][column]
+        for each pixel in row:
+            pixel = 255 - pixel
 
 // Function for Merge Filter
 function Merge_Filter():
@@ -115,26 +114,21 @@ function Merge_Filter():
     loadImage(image2) // Load the second image
 
     for each row in image:
-        for each column in row:
-            pixel[row][column] = (pixel1[row][column] + pixel2[row][column]) / 2
+        for each pixel in row:
+            pixel = (pixel1 + pixel2) / 2
 
 // Function for Flip Filter
 function Flip_Filter():
     print "Flip (h)orizontally or (v)ertically ?: "
-    char a = input()
-    if a == 'h' or a == 'H' then
-        for each row in image:
-            for each column in row:
-                pixel2[row][column] = pixel1[row][255 - column]
-    else if a == 'v' or a == 'V' then
-        for each row in image:
-            for each column in row:
-                pixel2[row][column] = pixel1[255 - row][column]
+    input char character
+    if character == 'h' or 'H' then
+        Flip the image horizontally
+
+    else if character == 'v' or 'V' then
+        Flip the image vertically
     else:
         print "please, select a valid operation (v) or (h)"
         Flip_Filter()
-
-    copy_image_to_image1(image2) // Copy the result back to the original image
 
 // Function for Rotate Filter
 function Rotate_Filter():
@@ -144,20 +138,11 @@ function Rotate_Filter():
     if b == 0 then
         // No rotation required
     else if b == 90 then
-        for each row in image:
-            for each column in row:
-                pixel2[column][255 - row] = pixel1[row][column]
-        copy_image_to_image1(image2) // Copy the result back to the original image
+        Rotate image by 90 degrees
     else if b == 180 then
-        for each row in image:
-            for each column in row:
-                pixel2[255 - row][255 - column] = pixel1[row][column]
-        copy_image_to_image1(image2) // Copy the result back to the original image
+        Rotate image by 180 degrees
     else if b == 270 then
-        for each row in image:
-            for each column in row:
-                pixel2[row][column] = pixel1[column][255 - row]
-        copy_image_to_image1(image2) // Copy the result back to the original image
+        Rotate image by 270 degrees
     else:
         print "Please choose a number that is divisible by 90"
         Rotate_Filter()
@@ -166,82 +151,37 @@ function Rotate_Filter():
 function Darken_and_Lighten_Filter():
     print "Do you want to (d)arken or (l)ighten ?: "
     char c = input()
-    if c == 'd' or c == 'D' then
-        for each row in image:
-            for each column in row:
-                pixel1[row][column] = pixel1[row][column] / 2
-    else if c == 'l' or c == 'L' then
-        for each row in image:
-            for each column in row:
-                pixel1[row][column] = (pixel1[row][column] + 255) / 2
+    if c == 'd' or'D' then
+        Darken image by 50%
+    else if c == 'l' or 'L' then
+        Lighten image by 50%
     else:
         print "Please choose a valid operation (d) or (l)"
         Darken_and_Lighten_Filter()
 
 // Function to detect edges in the image
 function Detect_Image_Edges():
-    for each row in image:
-        for each column in row:
-            if abs(pixel1[row][column] - pixel1[row + 1][column]) > 32 or abs(pixel1[row][column] - pixel1[row][column + 1]) > 32 then
-                pixel2[row][column] = 0
-            else
-                pixel2[row][column] = 255
+    If the color difference between a pixel and the pixel below or next to it > 32
+        the pixel becomes black and the rest of the image becomes white.
 
-    for each row in image:
-        for each column in row:
-            if pixel2[row][column - 1] == 255 and pixel2[row][column + 1] == 255 and pixel2[row - 1][column] == 255 and pixel2[row + 1][column] == 255 and pixel2[row - 1][column - 1] == 255 and pixel2[row + 1][column + 1] == 255 and pixel2[row - 1][column + 1] == 255 and pixel2[row + 1][column - 1] == 255 then
-                pixel2[row][column] = 255
+    Delete single points
 
-    copy_image_to_image1(image2)
 
 // Function to enlarge a quarter of the image
 function Enlarge_Filter():
     print "Which quarter to enlarge 1, 2, 3 or 4?"
-    int choose = input()
+    input int choose
     if choose == 1 then
-        // Extract the top-left quarter and enlarge it
-        unsigned char temp[256][256]
-        for each row in image / 2:
-            for each column in row / 2:
-                temp[row][column] = pixel1[row][column]
-
-        for each row in image:
-            for each column in row:
-                pixel1[row][column] = temp[row / 2][column / 2]
+        Extract the top-left quarter and enlarge it
     else if choose == 2 then
-        // Extract the top-right quarter and enlarge it
-        unsigned char temp[256][256]
-        for each row in image / 2:
-            for column from 128 to 256:
-                temp[row][column] = pixel1[row][column]
-
-        for each row in image:
-            for each column in row:
-                pixel1[row][column] = temp[row / 2][(column + 256) / 2]
+        Extract the top-right quarter and enlarge it
     else if choose == 3 then
-        // Extract the down-left quarter and enlarge it
-        unsigned char temp[256][256]
-        for row from 128 to 256:
-            for each column in row / 2:
-                temp[row][column] = pixel1[row][column]
-
-        for each row in image:
-            for each column in row:
-                pixel1[row][column] = temp[(row + 256) / 2][column / 2]
+        Extract the down-left quarter and enlarge it
     else if choose == 4 then
-        // Extract the down-right quarter and enlarge it
-        unsigned char temp[256][256]
-        for row from 128 to 256:
-            for column from 128 to 256:
-                temp[row][column] = pixel1[row][column]
-
-        for each row in image:
-            for each column in row:
-                pixel1[row][column] = temp[(row + 256) / 2][(column + 256) / 2]
+        Extract the down-right quarter and enlarge it
     else:
         print "Invalid choice, please choose 1, 2, 3, or 4"
         Enlarge_Filter()
-//////////////////////////////////////////////////////////////////////////////////////////////////
 
 // Function to shrink the image
 FUNCTION Shrink_Filter()
@@ -249,72 +189,32 @@ FUNCTION Shrink_Filter()
     INPUT shrink
 
     IF shrink EQUALS "1/2" THEN
-        // Shrink the image by half
-        FOR each row in image / 2
-            FOR each column in row / 2
-                image2[row][column] = image1[2 * row][2 * column]
-            ENDFOR
-        ENDFOR
+        Shrink the image by half
     ELSE IF shrink EQUALS "1/3" THEN
-        // Shrink the image by one-third
-        FOR each row in image / 3
-            FOR each column in row / 3
-                image2[row][column] = image1[3 * row][3 * column]
-            ENDFOR
-        ENDFOR
+        Shrink the image by one-third
     ELSE IF shrink EQUALS "1/4" THEN
-        // Shrink the image by one-fourth
-        FOR each row in image / 4
-            FOR each column in row / 4
-                image2[row][column] = image1[4 * row][4 * column]
-            ENDFOR
-        ENDFOR
+        Shrink the image by one-fourth
     ELSE
         PRINT "input a valid value (1/2), (1/3) or (1/4)"
         CALL Shrink_Filter() // Prompt for valid input
-    ENDIF
 
-    CALL copy_image_to_image1(image2) // Copy the result back to the original image
-ENDFUNCTION
 
 // Function to mirror the image
 FUNCTION Mirror_Filter()
     PRINT "Mirror (l)eft, (r)ight, (u)pper, (d)own side?"
     INPUT mirror
 
-    IF mirror EQUALS 'l' OR mirror EQUALS 'L' THEN
-        // Mirror the image horizontally (left to right)
-        FOR each row in image
-            FOR each column from 128 TO 256
-                image1[row][column] = image1[row][256 - column]
-            ENDFOR
-        ENDFOR
-    ELSE IF mirror EQUALS 'r' OR mirror EQUALS 'R' THEN
-        // Mirror the image horizontally (right to left)
-        FOR each row in image
-            FOR each column in row / 2
-                image1[row][column] = image1[row][256 - column]
-            ENDFOR
-        ENDFOR
-    ELSE IF mirror EQUALS 'u' OR mirror EQUALS 'U' THEN
-        // Mirror the image vertically (upper to lower)
-        FOR each row from 128 TO 256
-            FOR each column in row
-                image1[row][column] = image1[256 - row][column]
-            ENDFOR
-        ENDFOR
-    ELSE IF mirror EQUALS 'd' OR mirror EQUALS 'D' THEN
-        // Mirror the image vertically (lower to upper)
-        FOR each row in image / 2
-            FOR each column in row
-                image1[row][column] = image1[256 - row][column]
-            ENDFOR
-        ENDFOR
+    IF mirror EQUALS 'l' OR 'L' THEN
+        Mirror the image horizontally (left to right)
+    ELSE IF mirror EQUALS 'r' OR 'R' THEN
+        Mirror the image horizontally (right to left)
+    ELSE IF mirror EQUALS 'u' OR 'U' THEN
+        Mirror the image vertically (upper to lower)
+    ELSE IF mirror EQUALS 'd' OR 'D' THEN
+        Mirror the image vertically (lower to upper)
     ELSE
         PRINT "input a valid character l, r, u or d"
         CALL Mirror_Filter() // Prompt for valid input
-    ENDIF
-ENDFUNCTION
 
 // Function to shuffle the quarters of the image
 FUNCTION Shuffle_Filter()
@@ -326,13 +226,12 @@ FUNCTION Shuffle_Filter()
 
         IF order LESS THAN 1 OR order GREATER THAN 4 THEN
             PRINT "Invalid input. Please enter numbers between 1 and 4."
-            INPUT // Clear input buffer
+            Clear input buffer
             CALL Shuffle_Filter()
             RETURN
-        ENDIF
     ENDFOR
 
-    IF order[0] EQUALS 1 AND order[1] EQUALS 2 AND order[2] EQUALS 3 AND order[3] EQUALS 4 THEN
+    IF order is {1, 2, 3, 4} THEN
         RETURN
     ELSE
         INTEGER current quarter = 1
@@ -382,35 +281,14 @@ FUNCTION Shuffle_Filter()
 
             current quarter = current quarter + 1
         ENDFOR
-
-        CALL copy_image_to_image1(image2) // Copy the result back to the original image
     ENDIF
-ENDFUNCTION
 
-// Function to copy image2 to image1
-FUNCTION copy_image_to_image1(ARRAY image2[][])
-    FOR each row in image
-        FOR each column in row
-            image1[row][column] = image2[row][column]
-        ENDFOR
-    ENDFOR
-ENDFUNCTION
-/////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Function to apply a blur filter to the image
 FUNCTION Blur_Filter()
     FOR each row in image
-        FOR each column in row
+        FOR each pixel in row
             Merge the pixel with the 8 pixels around it
-        ENDFOR
-    ENDFOR
-
-    // Repeat the process for better results
-    FOR each row in image
-        FOR each column in row
-            Merge the pixel with the 8 pixels around it again
-        ENDFOR
-    ENDFOR
-ENDFUNCTION
+    Repeat the process for better results
 
 // Function to crop a region of interest from the image
 FUNCTION Crop_Filter()
@@ -420,11 +298,6 @@ FUNCTION Crop_Filter()
     FOR row = y TO y + w
         FOR column = x TO x + l
             Copy the specified region to the result image
-        ENDFOR
-    ENDFOR
-
-    CALL copy_image_to_image1(image2) // Copy the result back to the original image
-ENDFUNCTION
 
 // Function to skew the image to the right
 FUNCTION Skew_Image_Right()
@@ -432,30 +305,21 @@ FUNCTION Skew_Image_Right()
     INPUT degree
     mov = tan((degree * 22) / (180 * 7)) * 256
     step = mov / 256 // Number of steps
-    ARRAY temp[256][256 + mov]
+    Initialize a temporary image (temp) with size = [256][256 + mov]
 
-    // Initialize the temporary image with white pixels
     FOR each row in image
-        FOR each column in row + mov
-            temp[row][column] = 255
-        ENDFOR
-    ENDFOR
+        FOR each pixel in row + mov
+            Initialize the temporary image with white pixels
 
-    // Shift the pixels to the right according to the degree of skew
     FOR each row in image
-        FOR each column in row
-            temp[row][column + mov] = image1[row][column]
+        FOR each pixel in row
+            Shift the pixels to the right according to the degree of skew
         ENDFOR
         mov = mov - step
     ENDFOR
 
-    // Copy the result back to the original image
-    FOR each row in image
-        FOR each column in row
-            image1[row][column] = temp[row][INT((1 + step) * column)]
-        ENDFOR
-    ENDFOR
-ENDFUNCTION
+    Copy the result back to the original image
+
 
 // Function to skew the image upwards
 FUNCTION Skew_Image_Up()
@@ -463,58 +327,42 @@ FUNCTION Skew_Image_Up()
     INPUT degree
     mov = tan((degree * 22) / (180 * 7)) * 256
     step = mov / 256 // Number of steps
-    ARRAY temp[256 + mov][256]
+    Initialize a temporary image (temp) with size = [256][256 + mov]
 
-    // Initialize the temporary image with white pixels
-    FOR each row in image + mov
-        FOR each column in row
-            temp[row][column] = 255
-        ENDFOR
-    ENDFOR
+    FOR each row in image
+        FOR each pixel in row + mov
+            Initialize the temporary image with white pixels
 
-    // Shift the pixels upwards according to the degree of skew
-    FOR each column in row
-        FOR each row in image
-            temp[row + mov][column] = image1[row][column]
+
+    FOR each row in image
+        FOR each pixel in row
+            Shift the pixels upwards according to the degree of skew
         ENDFOR
         mov = mov - step
     ENDFOR
 
-    // Copy the result back to the original image
-    FOR each row in image
-        FOR each column in row
-            image1[row][column] = temp[INT((1 + step) * row)][column]
-        ENDFOR
-    ENDFOR
-ENDFUNCTION
+    Copy the result back to the original image
 
-// Function to save the image to a file
-FUNCTION Save_the_image_to_a_file()
+FUNCTION to Save the image to a file()
     CALL saveImage(image1) // Save the image
     EXIT = 0 // Set EXIT flag to exit the program
-ENDFUNCTION
 
-// Function to copy one image to another
-FUNCTION copy_image_to_image1(ARRAY image[256][256])
+FUNCTION to copy image to image1(ARRAY image[256][256])
     FOR each row in image
-        FOR each column in row
+        FOR each pixel in row
             image1[row][column] = image[row][column]
-        ENDFOR
-    ENDFOR
-ENDFUNCTION
 
-// Function to exit
-FUNCTION Exit()
+
+FUNCTION TO Exit()
     PRINT "Do you want to save the image before exiting? (y) or (n)"
-    INPUT ch
+    INPUT Character
 
-    IF ch EQUALS 'Y' OR ch EQUALS 'y' THEN
+    IF Character EQUALS 'Y' OR 'y' THEN
         CALL saveImage(image1)
         EXIT = 0 // Set EXIT flag to exit the program
-    ELSE IF ch EQUALS 'N' OR ch EQUALS 'n' THEN
+    ELSE IF Character EQUALS 'N' OR 'n' THEN
         EXIT = 0 // Set EXIT flag to exit the program
     ELSE
-        PRINT "input a valid character (y) or (n)"
+        PRINT "input a valid Character (y) or (n)"
         CALL Exit() // Prompt again for valid input
     ENDIF
-ENDFUNCTION
