@@ -885,8 +885,15 @@ void Crop_Filter()
 void Skew_Image_Right()
 {
   cout << "Please enter degree to skew right less than 89: ";
-  double degree;
+  int degree;
   cin >> degree;
+  degree%= 360;
+  if (degree >= 89)
+  {
+    cout<< "Enter a valid input/n";
+    Skew_Image_Right();
+    return;
+  }
   double mov = tan((degree * 22) / (180 * 7)) * 256;
   double step = mov / SIZE; // Number of steps
   unsigned char temp[SIZE][SIZE + (int)mov];
@@ -924,8 +931,15 @@ void Skew_Image_Right()
 void Skew_Image_Up()
 {
   cout << "Please enter degree to skew up less than 89: ";
-  double degree;
+  int degree;
   cin >> degree;
+  degree%= 360;
+  if (degree >= 89)
+  {
+    cout<< "Enter a valid input/n";
+    Skew_Image_Up();
+    return;
+  }
   double mov = tan((degree * 22) / (180 * 7)) * 256;
   double step = mov / SIZE; // Number of steps
   unsigned char temp[SIZE + (int)mov][SIZE];

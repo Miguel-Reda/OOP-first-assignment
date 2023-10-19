@@ -340,123 +340,43 @@ FUNCTION Shuffle_Filter()
         FOR EACH index IN order
             IF index EQUALS 1 THEN
                 IF current quarter EQUALS 1 THEN
-                    // Copy the top-left quarter to the top-left quarter in result image
-                    FOR each row from 0 to 128
-                        FOR each column from 0 to 128
-                            image2[row][column] = image1[row][column]
-                        ENDFOR
-                    ENDFOR
+                    Copy the top-left quarter to the top-left quarter in result image
                 ELSE IF current quarter EQUALS 2 THEN
-                    // Copy the top-right quarter to the top-left quarter in result image
-                    FOR each row from 0 to 128
-                        FOR each column from 0 to 128
-                            image2[row][column + 128] = image1[row][column]
-                        ENDFOR
-                    ENDFOR
+                    Copy the top-right quarter to the top-left quarter in result image
                 ELSE IF current quarter EQUALS 3 THEN
-                    // Copy the down-left quarter to the top-left quarter in result image
-                    FOR each row from 0 to 128
-                        FOR each column from 0 to 128
-                            image2[row + 128][column] = image1[row][column]
-                        ENDFOR
-                    ENDFOR
+                    Copy the down-left quarter to the top-left quarter in result image
                 ELSE IF current quarter EQUALS 4 THEN
-                    // Copy the down-right quarter to the top-left quarter in result image
-                    FOR each row from 0 to 128
-                        FOR each column from 0 to 128
-                            image2[row + 128][column + 128] = image1[row][column]
-                        ENDFOR
-                    ENDFOR
+                    Copy the down-right quarter to the top-left quarter in result image
                 ENDIF
             ELSE IF index EQUALS 2 THEN
                 IF current quarter EQUALS 1 THEN
-                    // Copy the top-left quarter to the top-right quarter in result image
-                    FOR each row from 0 to 128
-                        FOR each column from 0 to 128
-                            image2[row][column + 128] = image1[row][column]
-                        ENDFOR
-                    ENDFOR
+                    Copy the top-left quarter to the top-right quarter in result image
                 ELSE IF current quarter EQUALS 2 THEN
-                    // Copy the top-right quarter to the top-right quarter in result image
-                    FOR each row from 0 to 128
-                        FOR each column from 0 to 128
-                            image2[row][column] = image1[row][column]
-                        ENDFOR
-                    ENDFOR
+                    Copy the top-right quarter to the top-right quarter in result image
                 ELSE IF current quarter EQUALS 3 THEN
-                    // Copy the down-left quarter to the top-right quarter in result image
-                    FOR each row from 0 to 128
-                        FOR each column from 0 to 128
-                            image2[row + 128][column + 128] = image1[row][column]
-                        ENDFOR
-                    ENDFOR
+                    Copy the down-left quarter to the top-right quarter in result image
                 ELSE IF current quarter EQUALS 4 THEN
-                    // Copy the down-right quarter to the top-right quarter in result image
-                    FOR each row from 0 to 128
-                        FOR each column from 0 to 128
-                            image2[row + 128][column] = image1[row][column]
-                        ENDFOR
-                    ENDFOR
+                    Copy the down-right quarter to the top-right quarter in result image
                 ENDIF
             ELSE IF index EQUALS 3 THEN
                 IF current quarter EQUALS 1 THEN
-                    // Copy the top-left quarter to the down-left quarter in result image
-                    FOR each row from 0 to 128
-                        FOR each column from 0 to 128
-                            image2[row + 128][column] = image1[row][column]
-                        ENDFOR
-                    ENDFOR
+                    Copy the top-left quarter to the down-left quarter in result image
                 ELSE IF current quarter EQUALS 2 THEN
-                    // Copy the top-right quarter to the down-left quarter in result image
-                    FOR each row from 0 to 128
-                        FOR each column from 0 to 128
-                            image2[row + 128][column + 128] = image1[row][column]
-                        ENDFOR
-                    ENDFOR
+                    Copy the top-right quarter to the down-left quarter in result image
                 ELSE IF current quarter EQUALS 3 THEN
-                    // Copy the down-left quarter to the down-left quarter in result image
-                    FOR each row from 0 to 128
-                        FOR each column from 0 to 128
-                            image2[row][column] = image1[row][column]
-                        ENDFOR
-                    ENDFOR
+                    Copy the down-left quarter to the down-left quarter in result image
                 ELSE IF current quarter EQUALS 4 THEN
-                    // Copy the down-right quarter to the down-left quarter in result image
-                    FOR each row from 0 to 128
-                        FOR each column from 0 to 128
-                            image2[row][column + 128] = image1[row][column]
-                        ENDFOR
-                    ENDFOR
+                    Copy the down-right quarter to the down-left quarter in result image
                 ENDIF
             ELSE IF index EQUALS 4 THEN
                 IF current quarter EQUALS 1 THEN
-                    // Copy the top-left quarter to the down-right quarter in result image
-                    FOR each row from 0 to 128
-                        FOR each column from 0 to 128
-                            image2[row + 128][column + 128] = image1[row][column]
-                        ENDFOR
-                    ENDFOR
+                    Copy the top-left quarter to the down-right quarter in result image
                 ELSE IF current quarter EQUALS 2 THEN
-                    // Copy the top-right quarter to the down-right quarter in result image
-                    FOR each row from 0 to 128
-                        FOR each column from 0 to 128
-                            image2[row][column + 128] = image1[row][column]
-                        ENDFOR
-                    ENDFOR
+                    Copy the top-right quarter to the down-right quarter in result image
                 ELSE IF current quarter EQUALS 3 THEN
-                    // Copy the down-left quarter to the down-right quarter in result image
-                    FOR each row from 0 to 128
-                        FOR each column from 0 to 128
-                            image2[row + 128][column] = image1[row][column]
-                        ENDFOR
-                    ENDFOR
+                    Copy the down-left quarter to the down-right quarter in result image
                 ELSE IF current quarter EQUALS 4 THEN
-                    // Copy the down-right quarter to the down-right quarter in result image
-                    FOR each row from 0 to 128
-                        FOR each column from 0 to 128
-                            image2[row][column] = image1[row][column]
-                        ENDFOR
-                    ENDFOR
+                    Copy the down-right quarter to the down-right quarter in result image
                 ENDIF
             ENDIF
 
@@ -480,26 +400,14 @@ ENDFUNCTION
 FUNCTION Blur_Filter()
     FOR each row in image
         FOR each column in row
-            image1[row][column] = (
-                image1[row][column] +
-                image1[row][column + 1] + image1[row][column - 1] +
-                image1[row + 1][column] + image1[row - 1][column] +
-                image1[row + 1][column + 1] + image1[row - 1][column - 1] +
-                image1[row - 1][column + 1] + image1[row + 1][column - 1]
-            ) / 9
+            Merge the pixel with the 8 pixels around it
         ENDFOR
     ENDFOR
 
     // Repeat the process for better results
     FOR each row in image
         FOR each column in row
-            image1[row][column] = (
-                image1[row][column] +
-                image1[row][column + 1] + image1[row][column - 1] +
-                image1[row + 1][column] + image1[row - 1][column] +
-                image1[row + 1][column + 1] + image1[row - 1][column - 1] +
-                image1[row - 1][column + 1] + image1[row + 1][column - 1]
-            ) / 9
+            Merge the pixel with the 8 pixels around it again
         ENDFOR
     ENDFOR
 ENDFUNCTION
@@ -509,10 +417,9 @@ FUNCTION Crop_Filter()
     PRINT "Please enter the starting point coordinates x and y and the end point coordinates l and w: "
     INPUT x, y, l, w
 
-    // Copy the specified region to the result image
     FOR row = y TO y + w
         FOR column = x TO x + l
-            image2[row][column] = image1[row][column]
+            Copy the specified region to the result image
         ENDFOR
     ENDFOR
 
