@@ -318,7 +318,6 @@ FUNCTION Skew_Image_Right()
         mov = mov - step
     ENDFOR
 
-    Copy the result back to the original image
 
 
 // Function to skew the image upwards
@@ -341,7 +340,6 @@ FUNCTION Skew_Image_Up()
         mov = mov - step
     ENDFOR
 
-    Copy the result back to the original image
 
 FUNCTION to Save the image to a file()
     CALL saveImage(image1) // Save the image
