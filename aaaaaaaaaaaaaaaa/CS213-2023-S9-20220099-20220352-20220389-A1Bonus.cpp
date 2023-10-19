@@ -2,8 +2,8 @@
 // Program Name: CS213-2023-S9-20220099-20220352-20220389-A1Bonus.cpp
 // Last Modification Date: 7/10/2023
 // Authors' Information:
-// Author1 and ID and Email: Joseph Sameh   S9   20220099  jojo.1922005@gmail.com
-// Author2 and ID and Email:
+// Author1 and ID and Email: Joseph Sameh   S10   20220099  jojo.1922005@gmail.com
+// Author2 and ID and Email: Miguel Reda    S9    20220352  megooreda2005@gmail.com
 // Author3 and ID and Email: Youssef Joseph s19   20220389  youssefjoseph35@gmail.com
 // Purpose: The program downloads a RGB image,
 //          performs some operations and stores it in another file
