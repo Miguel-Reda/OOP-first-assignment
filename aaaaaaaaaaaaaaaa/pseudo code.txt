@@ -42,19 +42,19 @@ Define function doSomethingForImage()
     Switch choose_op
         Case '1': Call Black_and_White_Filter()
         Case '2': Call Invert_Filter()
-        Case '3': Merge_Filter();
-        Case '4': Flip_Filter();
-        Case '5': Rotate_Filter();
-        Case '6': Darken_and_Lighten_Filter();
-        Case '7': Detect_Image_Edges();
-        Case '8': Enlarge_Filter();
-        Case '9': Shrink_Filter();
-        Case 'a': Mirror_Filter();
-        Case 'b': Shuffle_Filter();
-        Case 'c': Blur_Filter();
-        Case 'd': Crop_filter();
-        Case 'e': Skew_Image_Right();
-        Case 'f': Skew_Image_Up();
+        Case '3': Call Merge_Filter();
+        Case '4': Call Flip_Filter();
+        Case '5': Call Rotate_Filter();
+        Case '6': Call Darken_and_Lighten_Filter();
+        Case '7': Call Detect_Image_Edges();
+        Case '8': Call Enlarge_Filter();
+        Case '9': Call Shrink_Filter();
+        Case 'a': Call Mirror_Filter();
+        Case 'b': Call Shuffle_Filter();
+        Case 'c': Call Blur_Filter();
+        Case 'd': Call Crop_filter();
+        Case 'e': Call Skew_Image_Right();
+        Case 'f': Call Skew_Image_Up();
         Case 's': Call Save_the_image_to_a_file()
         Case '0': Call Exit()
         Default: Print "please, select a valid operation" and Call doSomethingForImage()
