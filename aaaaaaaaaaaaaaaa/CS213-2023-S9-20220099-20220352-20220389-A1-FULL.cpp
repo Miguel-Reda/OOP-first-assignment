@@ -865,7 +865,7 @@ void Crop_Filter()
   // Prompt for valid input
   if (x < 0 || x > SIZE || y < 0 || y > SIZE || l < 0 || l > SIZE || w < 0 || w > SIZE || x > l || y > w)
   {
-    cout << "input a valid Numbers/n";
+    cout << "input a valid Numbers\n";
     Crop_Filter();
     return;
   }
@@ -890,7 +890,7 @@ void Skew_Image_Right()
   degree%= 360;
   if (degree >= 89)
   {
-    cout<< "Enter a valid input/n";
+    cout<< "Enter a valid input\n";
     Skew_Image_Right();
     return;
   }
@@ -936,7 +936,7 @@ void Skew_Image_Up()
   degree%= 360;
   if (degree >= 89)
   {
-    cout<< "Enter a valid input/n";
+    cout<< "Enter a valid input\n";
     Skew_Image_Up();
     return;
   }
